@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>{{ post.title }}</title>
+{% endblock %}
+
+{% block content %}
+
+<!-- Blog Details Hero Begin -->
+<section class="blog-hero spad">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-9 text-center">
+                <div class="blog__hero__text">
+                    <h2>{{ post.title }}</h2>
+                    <ul>
+                        <li>By Admin</li>
+                        <li>{{ post.created }}</li>
+                        <li>Comments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Hero End -->
+
+<!-- Blog Details Section Begin -->
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-12">
+                <div class="blog__details__pic">
+                    <img src="{{ post.img.url }}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="blog__details__content">
+                    <div class="blog__details__share">
+                        <span>share</span>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a></li>
+                            <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="blog__details__text">
+                        <p>{{ post.description|safe }}</p>
+                    </div>
+                    <div class="blog__details__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__author">
+                                    <div class="blog__details__author__pic">
+                                        <img src="{% static 'img/blog/eslam.jpg' %}" alt="">
+                                    </div>
+                                    <div class="blog__details__author__text">
+                                        <h5>Eslam Essam</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__tags">
+                                    <a href="#">#Fashion</a>
+                                    <a href="#">#Trending</a>
+                                    <a href="#">#{{current_year}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% for comment in comments %}
+                        <div class="blog__details__btns">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <a href="" class="blog__details__btns__item">
+                                        <p>By :{{comment}} | {{comment.created_at|timesince}}</p>
+                                        <h6>{{comment.comment}}</h6>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        </div>                      
+                    {% endfor %}
+                    
+                    {% if request.user.is_authenticated %}
+                        <div class="blog__details__comment">
+                            <h4>Leave A Comment</h4>
+                            <form action="{% url 'blog:add_comment' post.slug %}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <textarea name="comment" placeholder="Comment"></textarea>
+                                        <button type="submit" class="site-btn">Post Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="blog__details__comment">
+                            <h4>Please Sing Up To Leave A Comment</h4>                      
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Section End -->
+
+
+{% endblock %}

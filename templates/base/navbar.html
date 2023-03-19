@@ -1,0 +1,96 @@
+{% load static %}
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="#">Sign in</a>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="offcanvas__top__hover">
+                <span>Usd <i class="arrow_carrot-down"></i></span>
+                <ul>
+                    <li>USD</li>
+                    <li>EUR</li>
+                    <li>USD</li>
+                </ul>
+            </div>
+        </div>
+        
+
+        <div class="offcanvas__nav__option">
+            
+            <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span>0</span></a>
+            <div class="price">$0.00</div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <a href="{% url 'users:login' %}">Log in</a>
+                                <a href="{% url 'users:signup' %}">Sing up</a>
+                                <a href="{% url 'apple_login' %}">Sign in with Apple</a>
+                                {% if request.user.is_superuser %}
+                                <a href="/admin/">Admin</a>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="/"><img src="{{main.logo.url}}" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="{% url 'products:shop_list' %}">Shop</a></li>
+                            <li><a href="{% url 'main:about' %}">About Us</a></li>
+                            <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
+                            <li><a href="{% url 'main:contact' %}">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+                        {% with total_items=cart|length %}
+                            {% if total_items > 0 %}
+                            <a href="{% url 'cart:cart_detail' %}"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span style="color:red; font-weight:bold;">{{ total_items }}</span></a>
+                            <div class="price">${{ cart.get_total_price }}</div>
+                            {% else %}
+                            <a href=""><img src="{% static 'img/icon/cart.png' %}" alt="cart"> <span>0</span></a>
+                            <div class="price">$0.00</div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
