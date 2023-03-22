@@ -136,7 +136,6 @@ tmp
 passenger_wsgi.py
 
 
-static/
 media/
 
 db.sqlite3
