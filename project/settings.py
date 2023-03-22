@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import braintree
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
@@ -19,15 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n1@ubyn0au0t9a2)t_bm8cx%_pl1dfeensxt7b$(+afvx79iid'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.getenv('DEBUG')) == '1'
 
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = ['eslames2.pythonanywhere.com']
+
+ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS += [os.getenv('DJANGO_ALLOWED_HOST')]
 
 
 # Application definition
@@ -42,26 +48,39 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+]
+
+ALLAUTH = [
     # auth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.apple',
     'django_summernote',
+]
 
+APPS = [
     # my Apps
     'products.apps.ProductsConfig',
     'main.apps.MainConfig',
     'blog.apps.BlogConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
-    
+    'payment.apps.PaymentConfig',
+    'coupons.apps.CouponsConfig',
+]
+
+LIBRARY = [
     # library
     'taggit',
     'hitcount',
     'django_cleanup',
-
+    'localflavor',
+    # 'rosetta',
+    'parler',
 ]
+
+INSTALLED_APPS += ALLAUTH + LIBRARY + APPS
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -172,11 +191,13 @@ MESSAGE_TAGS = {
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
+
+
 # Custom Usersettings
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_URL = 'users:login'
+LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'account_login'
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
@@ -196,12 +217,38 @@ SUMMERNOTE_CONFIG = {
 CART_SESSION_ID = 'cart'
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'apple': {
-        'APP_ID': 'YOUR_APPLE_APP_ID',
-        'TEAM_ID': 'YOUR_APPLE_TEAM_ID',
-        'KEY_ID': 'YOUR_APPLE_KEY_ID',
-        'PRIVATE_KEY': 'path/to/your/private.p8',
-        'REDIRECT_URI': 'https://example.com/accounts/apple/login/callback/',
-    }
-}
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = '2022-08-01'
+STRIPE_WEBHOOK_SECRET = 'whsec_edd347ce316df7071ff6c9b6f4a3ed2359fde9d072cded4061fb7138a6e6ccf0'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'emails'
+
+
+# SMTP SETTINGS
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "yourmail@gmail.com"
+# EMAIL_HOST_PASSWORD = "your key"
+# DEFAULT_FROM_EMAIL = '<yourmail@gmail.com>'
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_ACCEPT_CONTENT = {'application/json'}
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Cairo'
+CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL')
+
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
+
+

@@ -4,8 +4,6 @@ from django_summernote.admin import SummernoteModelAdmin
 
 
 
-
-
 @admin.register(Blog)
 class BlogAdmin(SummernoteModelAdmin, admin.ModelAdmin):
     list_display = ['author', 'title', 'created']
@@ -15,3 +13,4 @@ class BlogAdmin(SummernoteModelAdmin, admin.ModelAdmin):
 @admin.register(Comments)
 class CommentsAdmin(admin.ModelAdmin):
     pass
+

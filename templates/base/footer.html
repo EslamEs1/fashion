@@ -6,9 +6,9 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="/"><img src="{{main.logo.url}}" alt="logo"></a>
+                            <a href="/"><img src="{% static 'img/LOGO2.png' %}" alt="logo"></a>
                         </div>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <p>Back-End Developer Python, Django, Rest Api.</p>
                         <a href="#"><img src="{% static 'img/payment.png' %}" alt=""></a>
                     </div>
                 </div>
@@ -19,18 +19,16 @@
                             <li><a href="{% url 'products:filter_list' 'clothing' %}">Clothing Store</a></li>
                             <li><a href="{% url 'products:filter_list' 'shoes' %}">Shoes</a></li>
                             <li><a href="{% url 'products:filter_list' 'accessories' %}">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
                     <div class="footer__widget">
-                        <h6>Shopping</h6>
+                        <h6>Main</h6>
                         <ul>
                             <li><a href="{% url 'main:contact' %}">Contact Us</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Delivary</a></li>
-                            <li><a href="#">Return & Exchanges</a></li>
+                            <li><a href="{% url 'main:about' %}">About us</a></li>
+                            <li><a href="{% url 'blog:post_list' %}">Blogs</a></li>
                         </ul>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
                             {{current_year}}
                             All rights reserved | Back-End made with <i class="fa fa-heart-o"
                             aria-hidden="true"></i> by <a href="{{main.facebook}}" target="_blank">
-                            <img style="width:35px; height:35px; object-fit:cover" src="{% static 'img/logoback.png' %}">
+                            <img style="width:30px; height:30px; object-fit:cover" src="{% static 'img/LOGO2.png' %}">
                             </a>
                         </p>
                     </div>

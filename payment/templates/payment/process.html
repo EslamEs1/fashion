@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+<title>
+  Pay your order
+
+</title>
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">Order summary</h1>
+<div class="container">
+  <table class="cart">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      {% for item in order.items.all %}
+      <td>{{ item.product.title }}</td>
+      <td class="num">${{ item.price }}</td>
+      <td class="num">{{ item.quantity }}</td>
+      </tr>
+      {% endfor %}
+      {% if order.coupon %}
+      <tr class="subtotal">
+        <td>{% trans "Subtotal" %}</td>
+        <td colspan="3"></td>
+        <td class="num">
+          ${{ order.get_total_cost_before_discount|floatformat:2 }}
+        </td>
+      </tr>
+      <tr class="total">
+        <td>
+          {% blocktrans with code=order.coupon.code discount=order.discount %}
+          "{{ code }}" ({{ discount }}% off)
+          {% endblocktrans %}
+        </td>
+        <td colspan="3"></td>
+        <td class="num neg">
+          - ${{ order.get_discount|floatformat:2 }}
+        </td>
+      </tr>
+      {% endif %}
+      <tr class="total">
+        <td>{% trans "Total" %}</td>
+        <td colspan="3"></td>
+        <td class="num">
+          ${{ order.get_total_cost|floatformat:2 }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="payment_button" action="{% url 'payment:process' %}" method="post">
+    <input class="buttonpay" type="submit" value="Pay now">
+    {% csrf_token %}
+  </form>
+</div>
+{% endblock %}

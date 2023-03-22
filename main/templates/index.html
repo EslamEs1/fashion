@@ -102,7 +102,7 @@
         </div>
         <div class="row product__filter">
             {% for pro in product %}
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {% if pro.check_rating >= 3.5 %}new-reviews{% else %}{% endif %}">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {% if pro.check_rating >= 3.5 %}new-reviews {% elif pro.order_items.all %}hot-sales{% else %}{% endif %}">
                 <div class="product__item">
                     <div class="product__item__pic set-bg"
                         data-setbg="{% for img in pro.product_img.filter %}{% if forloop.last %}{{img.image.url}}{% endif%} {% endfor %}">

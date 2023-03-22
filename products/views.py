@@ -4,7 +4,7 @@ from django.db.models import Q, Count
 from taggit.models import Tag
 from cart.forms import CartAddProductForm
 from django.views.generic.edit import FormMixin
-
+from .recommender import Recommender
 
 class ShopListView(ListView):
     model = Product
@@ -49,9 +49,12 @@ class ShopDetailView(FormMixin,DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ShopDetailView, self).get_context_data(**kwargs)
+        r = Recommender()
+        context['recommended_products'] = r.suggest_products_for([self.get_object()], 4)
         context['img'] = ImageProduct.objects.filter(product=self.get_object())
         context['tags'] = Tag.objects.filter(tags__product=self.get_object())
         context['related'] = Product.objects.filter(category=self.get_object().category)[:3]
+        
         return context
 
 
