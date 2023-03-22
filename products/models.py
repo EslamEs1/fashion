@@ -4,8 +4,9 @@ from django.utils.text import slugify
 from taggit.managers import TaggableManager
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
-# Create your models here.
-
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from blog.utils import slugify_instance_title
 
 
 class Product(models.Model):
@@ -57,6 +58,17 @@ class Product(models.Model):
         else:
             return 0
 
+
+@receiver(pre_save, sender=Product)
+def check_slug(sender, instance, *args, **kwargs):
+    if instance.slug is None:
+        slugify_instance_title(instance, save=False)
+
+
+@receiver(post_save, sender=Product)
+def course_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        slugify_instance_title(instance, save=True)
 
 # Created ImageProduct==============================
 class ImageProduct(models.Model):
