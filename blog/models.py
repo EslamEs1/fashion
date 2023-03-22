@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .utils import slugify_instance_title
+from core.utils import slugify_instance_title
 
 
 # Start Blog

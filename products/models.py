@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from blog.utils import slugify_instance_title
+from core.utils import slugify_instance_title
 
 
 class Product(models.Model):
