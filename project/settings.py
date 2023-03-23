@@ -39,7 +39,7 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [    
-    # users app
+    'jazzmin',
     'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
